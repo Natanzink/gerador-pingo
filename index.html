@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador do Pingo</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url("fundo.png") no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  animation: fade 1s ease;
+}
+
+@keyframes fade {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+.logo {
+  width: 160px;
+  display: block;
+  margin: 20px auto;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {transform:scale(1);}
+  50% {transform:scale(1.05);}
+  100% {transform:scale(1);}
+}
+
+.card {
+  background: rgba(0,0,0,0.7);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+input, button, select {
+  width: 100%;
+  margin-top: 10px;
+}
+
+button {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #00ff88;
+  font-weight: bold;
+}
+
+.imagens {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.imagens img {
+  width: 200px;
+  border-radius: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="logo.png" class="logo">
+
+<select id="lang" onchange="trocarIdioma()">
+  <option value="pt">Português</option>
+  <option value="en">English</option>
+</select>
+
+<div class="card">
+<p id="txtDpi">DPI: <span id="dpiValor">900</span></p>
+<input type="range" min="500" max="1400" value="900" id="dpi">
+<button id="btn" onclick="gerar()">Gerar Sensi</button>
+</div>
+
+<div class="card" id="resultado"></div>
+
+<!-- IMAGENS EMBAIXO -->
+<div class="card imagens">
+  <img src="img1.png">
+  <img src="img2.png">
+  <img src="img3.png">
+</div>
+
+</div>
+
+<script>
+var dpi = document.getElementById("dpi");
+var dpiValor = document.getElementById("dpiValor");
+
+dpi.oninput = function() {
+  dpiValor.innerText = dpi.value;
+}
+
+var idioma = "pt";
+
+function trocarIdioma() {
+  idioma = document.getElementById("lang").value;
+  document.getElementById("btn").innerText =
+    idioma === "pt" ? "Gerar Sensi" : "Generate Sensitivity";
+}
+
+function gerar() {
+  var d = Number(dpi.value);
+
+  var geral = Math.min(200, Math.floor(d / 7));
+  var red = Math.min(200, geral + 10);
+  var mira2 = Math.min(200, geral - 5);
+  var mira4 = Math.min(200, geral - 15);
+  var awm = Math.min(200, geral - 25);
+
+  document.getElementById("resultado").innerHTML =
+    "<b>" + (idioma === "pt" ? "Sensibilidade" : "Sensitivity") + "</b><br>" +
+    "Geral: " + geral + "<br>" +
+    "Red Dot: " + red + "<br>" +
+    "Mira 2x: " + mira2 + "<br>" +
+    "Mira 4x: " + mira4 + "<br>" +
+    "AWM: " + awm;
+}
+</script>
+
+</body>
+</html>
